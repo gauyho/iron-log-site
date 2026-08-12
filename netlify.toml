@@ -1,0 +1,7 @@
+# Configuración de Netlify.
+#
+# El sitio está en la raíz de este repositorio, así que se publica todo.
+# No hay proceso de compilación: son archivos HTML, CSS e imágenes.
+
+[build]
+  publish = "."

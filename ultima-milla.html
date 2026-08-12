@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iron Log — Última milla CABA y GBA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dark:#572D5F; --mid:#8A5B93; --accent:#E82562;
+    --bg:#FAF7FA; --card:#FFFFFF; --ink:#2B1830; --muted:#7A6B80; --line:#EAE1EA; --tint:#F3ECF4;
+    --wa:#25D366;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+  section{padding:56px 0;}
+  img{max-width:100%;display:block;}
+
+  .topnav{display:flex;justify-content:space-between;align-items:center;padding:24px 0;flex-wrap:wrap;gap:10px;}
+  .brand img{height:116px;margin:0 0 -30px -15px;}
+  .nav-link{font-size:13.5px;font-weight:700;color:var(--dark);text-decoration:none;padding:10px 18px;
+    border:1.5px solid var(--line);border-radius:999px;}
+  .nav-link:hover{border-color:var(--accent);color:var(--accent);}
+
+  .eyebrow{display:block;font-size:24px;font-weight:900;letter-spacing:-0.01em;color:var(--accent);margin-bottom:8px;}
+  h1{font-size:40px;font-weight:900;line-height:1.08;margin:0 0 14px;color:var(--dark);letter-spacing:-0.02em;}
+  h2{font-size:21px;font-weight:800;line-height:1.25;margin:0 0 10px;color:var(--dark);}
+  .lead{font-size:15.5px;line-height:1.6;color:var(--muted);max-width:560px;margin:0 0 20px;}
+
+  .search-box{position:relative;max-width:460px;margin-bottom:18px;}
+  .search-box input{width:100%;font-family:inherit;font-size:15px;padding:15px 20px;border-radius:999px;
+    border:1.5px solid var(--line);outline:none;}
+  .search-box input:focus{border-color:var(--mid);}
+  .search-results{position:absolute;top:105%;left:0;right:0;background:#fff;border:1px solid var(--line);
+    border-radius:16px;box-shadow:0 20px 40px -20px rgba(87,45,95,.3);max-height:260px;overflow-y:auto;
+    display:none;z-index:10;}
+  .search-results.show{display:block;}
+  .search-item{padding:12px 20px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--line);}
+  .search-item:last-child{border-bottom:none;}
+  .search-item:hover{background:var(--tint);}
+  .search-item b{color:var(--dark);}
+  .search-item span{color:var(--muted);font-size:12px;}
+
+  .divider{text-align:center;font-size:12.5px;color:var(--muted);margin:22px 0;font-weight:700;}
+
+  .zone-btns{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px;}
+  .zone-btn{font-family:inherit;font-size:13.5px;font-weight:800;padding:11px 20px;border-radius:999px;
+    border:1.5px solid var(--line);background:#fff;color:var(--dark);cursor:pointer;}
+  .zone-btn.active{background:var(--dark);border-color:var(--dark);color:#fff;}
+
+  .zone-name{font-weight:800;color:var(--dark);font-size:17px;margin-bottom:6px;}
+  .zone-locs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px;}
+  .loc-chip{font-size:12px;font-weight:600;color:var(--dark);background:var(--tint);
+    padding:7px 14px;border-radius:999px;border:1px solid var(--line);}
+
+  .tabs{display:flex;gap:8px;margin-bottom:20px;}
+  .tab-btn{font-family:inherit;font-size:13.5px;font-weight:800;padding:12px 22px;border-radius:14px 14px 0 0;
+    border:1.5px solid var(--line);border-bottom:none;background:#F3ECF4;color:var(--muted);cursor:pointer;}
+  .tab-btn.active{background:#fff;color:var(--dark);}
+  .tab-panel{display:none;}
+  .tab-panel.show{display:block;}
+
+  .price-card{background:var(--card);border:1px solid var(--line);border-radius:0 20px 20px 20px;overflow:hidden;
+    box-shadow:0 20px 40px -30px rgba(87,45,95,.3);}
+  table{width:100%;border-collapse:collapse;}
+  thead th{background:var(--dark);color:#fff;font-size:12px;font-weight:700;text-align:left;padding:12px 18px;}
+  thead th.r{text-align:right;}
+  tbody td{padding:12px 18px;font-size:16.5px;border-top:1px solid var(--line);}
+  tbody td.r{text-align:right;font-weight:700;color:var(--dark);}
+  tbody tr:nth-child(odd){background:#FCFAFC;}
+  .price-note{padding:16px 18px;font-size:12px;color:var(--muted);background:#FCFAFC;border-top:1px solid var(--line);
+    line-height:1.6;}
+
+  .wa-box{margin-top:18px;background:var(--tint);border:1px solid var(--line);border-radius:16px;
+    padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+  .wa-box p{margin:0;font-size:40px;color:var(--ink);font-weight:900;line-height:1.15;}
+  .wa-btn{display:inline-flex;align-items:center;gap:8px;background:var(--wa);color:#fff;font-weight:800;
+    font-size:13.5px;padding:12px 22px;border-radius:999px;text-decoration:none;white-space:nowrap;}
+  .wa-btn:hover{background:#1ebc59;}
+
+  .cta{background:var(--accent);color:#fff;border:none;font-family:inherit;font-weight:800;font-size:14.5px;
+    padding:15px 30px;border-radius:999px;cursor:pointer;white-space:nowrap;display:inline-block;text-decoration:none;}
+
+  .calc-box{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px 26px;}
+  .calc-box .calc-title{font-weight:800;color:var(--dark);font-size:16px;margin-bottom:4px;}
+  .calc-box .calc-sub{font-size:12.5px;color:var(--muted);margin-bottom:18px;}
+  .calc-row{display:grid;grid-template-columns:1fr 110px 120px 32px;gap:10px;align-items:center;margin-bottom:10px;}
+  @media (max-width:560px){.calc-row{grid-template-columns:1fr 90px 100px 28px;}}
+  .calc-row select, .calc-row input{font-family:inherit;font-size:13px;padding:10px 12px;border-radius:10px;
+    border:1.5px solid var(--line);outline:none;width:100%;}
+  .calc-row select:focus, .calc-row input:focus{border-color:var(--mid);}
+  .calc-precio{font-weight:800;color:var(--dark);font-size:13px;text-align:right;}
+  .calc-precio .tag{display:block;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;}
+  .calc-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;width:32px;text-align:center;}
+  .calc-del:hover{color:var(--accent);}
+  .calc-add{background:none;border:1.5px dashed var(--line);color:var(--dark);font-family:inherit;font-weight:700;
+    font-size:13px;padding:11px 16px;border-radius:12px;cursor:pointer;width:100%;margin-top:6px;}
+  .calc-add:hover{border-color:var(--mid);}
+  .calc-total{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:16px;
+    border-top:1px solid var(--line);}
+  .calc-total .label{font-weight:700;color:var(--ink);font-size:14px;}
+  .calc-total .value{font-weight:900;color:var(--dark);font-size:24px;}
+  .calc-note{font-size:11px;color:var(--muted);margin-top:12px;line-height:1.6;}
+
+  .incluye-box{margin-top:22px;background:var(--card);border:1px solid var(--line);border-radius:20px;
+    padding:24px 26px;}
+  .incluye-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  @media (max-width:640px){.incluye-grid{grid-template-columns:1fr;}}
+  .incluye-grid b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--dark);margin-bottom:10px;}
+  .incluye-list{margin:0;padding:0;list-style:none;font-size:13px;color:var(--ink);}
+  .incluye-list li{padding:4px 0 4px 26px;position:relative;line-height:1.5;}
+  .incluye-list.si li::before{content:"✓";position:absolute;left:0;top:4px;color:#1B7A3D;font-weight:900;
+    width:18px;height:18px;background:#DFF5E1;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:11px;line-height:18px;}
+  .incluye-list.no li::before{content:"✕";position:absolute;left:0;top:4px;color:#B3261E;font-weight:900;
+    width:18px;height:18px;background:#FBE4E2;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:10px;line-height:18px;}
+  .precio-aclaracion{font-size:11.5px;color:var(--muted);margin-top:16px;padding-top:14px;border-top:1px solid var(--line);}
+
+  .contacto-section{position:relative;border-radius:32px;overflow:hidden;color:#fff;padding:0;margin-top:20px;
+    background:linear-gradient(135deg,var(--dark),var(--mid));}
+  .contacto-inner{position:relative;padding:56px 40px;text-align:center;}
+  .contacto-inner .info{margin-top:22px;display:flex;flex-wrap:wrap;justify-content:center;gap:26px;font-size:13.5px;}
+  .contacto-inner .info b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;opacity:.7;margin-bottom:4px;}
+
+  @media (max-width:640px){
+    h1{font-size:30px;} .eyebrow{font-size:19px;}
+  }  .map-bg{position:fixed;inset:0;width:100%;height:100%;z-index:-1;opacity:.09;pointer-events:none;
+    fill:none;stroke:#8A5B93;}
+</style>
+</head>
+<body>
+<svg class="map-bg" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <!-- contorno de CABA (estilizado, no catastral) -->
+  <path d="M 120 120
+           C 90 220, 80 320, 110 420
+           C 130 500, 170 560, 230 620
+           C 320 690, 430 730, 560 740
+           C 700 745, 830 700, 900 610
+           L 860 560
+           C 780 610, 680 640, 580 630
+           C 470 618, 370 580, 290 510
+           C 220 450, 180 370, 175 290
+           C 172 230, 185 175, 210 130
+           Z"
+        stroke-width="3"/>
+
+  <!-- Rio de la Plata, borde este -->
+  <path d="M 900 610 C 950 560, 970 480, 960 400 C 955 320, 920 250, 860 190"
+        stroke-width="2" stroke-dasharray="2 6"/>
+
+  <!-- grilla de calles -->
+  <g stroke-width="1" opacity=".6">
+    <line x1="160" y1="180" x2="880" y2="220"/>
+    <line x1="150" y1="260" x2="900" y2="310"/>
+    <line x1="150" y1="340" x2="880" y2="400"/>
+    <line x1="170" y1="420" x2="820" y2="490"/>
+    <line x1="210" y1="500" x2="740" y2="580"/>
+    <line x1="270" y1="570" x2="640" y2="640"/>
+
+    <line x1="240" y1="140" x2="290" y2="700"/>
+    <line x1="360" y1="140" x2="440" y2="710"/>
+    <line x1="480" y1="150" x2="580" y2="725"/>
+    <line x1="600" y1="170" x2="700" y2="700"/>
+    <line x1="720" y1="200" x2="800" y2="630"/>
+  </g>
+
+  <!-- puntos de referencia (deposito + un par de zonas) -->
+  <circle cx="300" cy="470" r="7" fill="#E82562" stroke="none"/>
+  <circle cx="470" cy="330" r="4" fill="#8A5B93" stroke="none"/>
+  <circle cx="600" cy="420" r="4" fill="#8A5B93" stroke="none"/>
+  <circle cx="380" cy="560" r="4" fill="#8A5B93" stroke="none"/>
+  <circle cx="700" cy="350" r="4" fill="#8A5B93" stroke="none"/>
+</svg>
+
+
+<div class="wrap">
+  <nav class="topnav">
+    <a href="index.html" class="brand"><img src="img/logo-iron-log.png" alt="Iron Log"></a>
+    <a href="index.html" class="nav-link">← Volver al inicio</a>
+  </nav>
+</div>
+
+<div class="wrap">
+  <section style="padding-top:10px;">
+    <span class="eyebrow">Última milla</span>
+    <h1>Reparto en CABA y GBA, con precios claros por zona.</h1>
+    <p class="lead">Buscá tu barrio o localidad y mirá el precio según el peso — para envío compartido (más económico) o exclusivo (vehículo solo para vos).</p>
+
+    <div class="search-box">
+      <input type="text" id="buscador" placeholder="Buscá tu barrio o localidad..." autocomplete="off">
+      <div class="search-results" id="resultados"></div>
+    </div>
+
+    <div class="divider">— o elegí directo por zona —</div>
+
+    <div class="zone-btns" id="zoneBtns"></div>
+
+    <div class="zone-name" id="zoneName"></div>
+    <div class="zone-locs" id="zoneLocs"></div>
+
+    <div class="tabs">
+      <button class="tab-btn active" id="tabProg" onclick="mostrarTab('prog')">Envío Compartido</button>
+      <button class="tab-btn" id="tabEx" onclick="mostrarTab('ex')">Envío Exclusivo</button>
+    </div>
+
+    <div class="tab-panel show" id="panelProg">
+      <div class="price-note" style="border:1px solid var(--line);border-radius:14px;margin-bottom:14px;">
+        Envío compartido con otros pedidos de la misma zona, en fecha programada. Precio válido hasta 150kg por envío —
+        para pedidos más pesados, mirá la pestaña "Envío Exclusivo". Precios + IVA, sujetos a que se junte suficiente volumen
+        en la fecha programada.
+      </div>
+      <div class="price-card">
+        <table>
+          <thead><tr><th>Rango de peso</th><th class="r">Precio</th></tr></thead>
+          <tbody id="tablaProg"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panelEx">
+      <div class="price-note" style="border:1px solid var(--line);border-radius:14px;margin-bottom:14px;">
+        Vehículo exclusivo para tu envío, sin compartir con otros pedidos — disponible siempre, sin esperar a que se junte
+        volumen. El precio es por vehículo, no por kg: da lo mismo mandar 5kg o 900kg en el mismo rango. Precios + IVA.
+      </div>
+      <div class="price-card">
+        <table>
+          <thead><tr><th>Peso</th><th class="r">Precio (vehículo completo)</th></tr></thead>
+          <tbody id="tablaEx"></tbody>
+        </table>
+      </div>
+      <div class="wa-box">
+        <p>¿Tenés dudas sobre tu envío o tu peso no entra en estos rangos?</p>
+        <a class="wa-btn" href="https://wa.me/5491125843003?text=%C2%A1Hola%21%20Tengo%20una%20duda%20sobre%20un%20env%C3%ADo%20de%20%C3%BAltima%20milla." target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.87.5 3.62 1.38 5.12L2 22l4.88-1.38C8.38 21.5 10.13 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.28 1.18-1.77 1.25-.45.07-1.02.1-1.65-.1-.38-.12-.87-.28-1.5-.55-2.64-1.14-4.36-3.8-4.5-3.98-.13-.18-1.08-1.44-1.08-2.74s.68-1.94.93-2.2c.24-.27.53-.33.7-.33h.5c.16 0 .38-.06.6.45.22.53.75 1.83.82 1.96.07.13.11.29.02.47-.09.18-.14.29-.27.44-.13.16-.28.35-.4.47-.13.13-.27.27-.12.53.16.27.7 1.15 1.5 1.86 1.04.93 1.9 1.22 2.17 1.36.27.13.43.11.6-.07.16-.18.68-.79.86-1.06.18-.27.36-.22.6-.13.25.09 1.55.73 1.82.87.27.13.45.2.51.31.07.13.07.71-.15 1.32z"/></svg>
+          Escribinos por WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <div class="incluye-box">
+      <div class="incluye-grid">
+        <div>
+          <b>Incluye</b>
+          <ul class="incluye-list si">
+            <li>Unidad y chofer</li>
+            <li>Seguimiento del envío</li>
+            <li>Manipuleo de carga general</li>
+          </ul>
+        </div>
+        <div>
+          <b>No incluye</b>
+          <ul class="incluye-list no">
+            <li>Peajes</li>
+            <li>Esperas prolongadas</li>
+            <li>Carga/descarga extraordinaria</li>
+            <li>Seguro operativo</li>
+            <li>Seguro sobre valor declarado (a cotizar aparte)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="precio-aclaracion">Precios + IVA. Sujetos a actualización por costos operativos.</div>
+    </div>
+
+    <div class="calc-box">
+      <div class="calc-title">¿Tenés varios envíos? Sumalos acá</div>
+      <div class="calc-sub">Cada fila es un envío a una dirección distinta. El precio de cada uno se calcula solo, y abajo ves el total de todos juntos.</div>
+      <div id="calcRows"></div>
+      <button class="calc-add" onclick="agregarEnvio()">+ Agregar otro envío</button>
+      <div class="calc-total">
+        <span class="label">Total de todos los envíos</span>
+        <span class="value" id="calcTotal">$0</span>
+      </div>
+      <div class="calc-note">
+        Envíos de hasta 150kg se calculan como Programado (compartido) — precio estimado, sujeto a que se junte
+        volumen ese día. Envíos de más de 150kg se calculan como Exclusivo, siempre disponible.
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <section class="contacto-section">
+    <div class="contacto-inner">
+      <h2 style="color:#fff;font-size:26px;">¿Necesitás gestionar algo más grande?</h2>
+      <p style="opacity:.9;font-size:14px;max-width:480px;margin:0 auto;">Para almacenamiento y distribución completa, conocé Iron Log depósito.</p>
+      <div class="info">
+        <div><b>Dirección</b>Araoz de Lamadrid 1848 | CABA</div>
+        <div><b>Web</b>www.ironlog.com.ar</div>
+        <div><b>Teléfono</b>11.2584.3003</div>
+      </div>
+      <div style="margin-top:22px;">
+        <a href="index.html" class="cta">Ver depósito y almacenamiento →</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const localidades = [{"nombre": "Balvanera", "zona": "C1"}, {"nombre": "Barracas", "zona": "C1"}, {"nombre": "Constitucion", "zona": "C1"}, {"nombre": "La Boca", "zona": "C1"}, {"nombre": "Monserrat", "zona": "C1"}, {"nombre": "Nueva Pompeya", "zona": "C1"}, {"nombre": "Parque Patricios", "zona": "C1"}, {"nombre": "Puerto Madero", "zona": "C1"}, {"nombre": "San Cristobal", "zona": "C1"}, {"nombre": "San Nicolas", "zona": "C1"}, {"nombre": "San Telmo", "zona": "C1"}, {"nombre": "Boedo", "zona": "C2"}, {"nombre": "Caballito", "zona": "C2"}, {"nombre": "Chacarita", "zona": "C2"}, {"nombre": "Colegiales", "zona": "C2"}, {"nombre": "La Paternal", "zona": "C2"}, {"nombre": "Palermo", "zona": "C2"}, {"nombre": "Parque Avellaneda", "zona": "C2"}, {"nombre": "Parque Chacabuco", "zona": "C2"}, {"nombre": "Parque Chas", "zona": "C2"}, {"nombre": "Recoleta", "zona": "C2"}, {"nombre": "Retiro", "zona": "C2"}, {"nombre": "Villa Crespo", "zona": "C2"}, {"nombre": "Villa Del Parque", "zona": "C2"}, {"nombre": "Villa General Mitre", "zona": "C2"}, {"nombre": "Villa Lugano", "zona": "C2"}, {"nombre": "Villa Riachuelo", "zona": "C2"}, {"nombre": "Villa Santa Rita", "zona": "C2"}, {"nombre": "Villa Soldati", "zona": "C2"}, {"nombre": "Agronomia", "zona": "C3"}, {"nombre": "Almagro", "zona": "C3"}, {"nombre": "Belgrano", "zona": "C3"}, {"nombre": "Coghlan", "zona": "C3"}, {"nombre": "Flores", "zona": "C3"}, {"nombre": "Floresta", "zona": "C3"}, {"nombre": "Liniers", "zona": "C3"}, {"nombre": "Mataderos", "zona": "C3"}, {"nombre": "Monte Castro", "zona": "C3"}, {"nombre": "Nuñez", "zona": "C3"}, {"nombre": "Saavedra", "zona": "C3"}, {"nombre": "Velez Sarsfield", "zona": "C3"}, {"nombre": "Versalles", "zona": "C3"}, {"nombre": "Villa Devoto", "zona": "C3"}, {"nombre": "Villa Luro", "zona": "C3"}, {"nombre": "Villa Ortuzar", "zona": "C3"}, {"nombre": "Villa Pueyrredon", "zona": "C3"}, {"nombre": "Villa Real", "zona": "C3"}, {"nombre": "Villa Urquiza", "zona": "C3"}, {"nombre": "Avellaneda", "zona": "A1"}, {"nombre": "Gerli", "zona": "A1"}, {"nombre": "Lanus", "zona": "A1"}, {"nombre": "Piñeyro", "zona": "A1"}, {"nombre": "Sarandi", "zona": "A1"}, {"nombre": "V. Alsina", "zona": "A1"}, {"nombre": "V. Dominico", "zona": "A1"}, {"nombre": "Wilde", "zona": "A1"}, {"nombre": "Adrogue", "zona": "A2"}, {"nombre": "Banfield", "zona": "A2"}, {"nombre": "Bernal", "zona": "A2"}, {"nombre": "Burzaco", "zona": "A2"}, {"nombre": "Caseros", "zona": "A2"}, {"nombre": "Ciudadela", "zona": "A2"}, {"nombre": "Don Bosco", "zona": "A2"}, {"nombre": "El Palomar", "zona": "A2"}, {"nombre": "Florencio Varella", "zona": "A2"}, {"nombre": "Florida", "zona": "A2"}, {"nombre": "L. De Zamora", "zona": "A2"}, {"nombre": "La Lucila", "zona": "A2"}, {"nombre": "Lomas del mirador", "zona": "A2"}, {"nombre": "Munro", "zona": "A2"}, {"nombre": "Olivos", "zona": "A2"}, {"nombre": "Quilmes", "zona": "A2"}, {"nombre": "R. De Escalada", "zona": "A2"}, {"nombre": "Ramos Mejia", "zona": "A2"}, {"nombre": "San Martin", "zona": "A2"}, {"nombre": "Santos Lugares", "zona": "A2"}, {"nombre": "Temperley", "zona": "A2"}, {"nombre": "Turdera", "zona": "A2"}, {"nombre": "V. Lynch", "zona": "A2"}, {"nombre": "Vte Lopez", "zona": "A2"}, {"nombre": "Acassuso", "zona": "A3"}, {"nombre": "Becar", "zona": "A3"}, {"nombre": "Bella Vista", "zona": "A3"}, {"nombre": "Berazategui", "zona": "A3"}, {"nombre": "Boulogne", "zona": "A3"}, {"nombre": "Canning", "zona": "A3"}, {"nombre": "Castelar", "zona": "A3"}, {"nombre": "Don torcuato", "zona": "A3"}, {"nombre": "El Talar", "zona": "A3"}, {"nombre": "Ezeiza", "zona": "A3"}, {"nombre": "Glew", "zona": "A3"}, {"nombre": "Haedo", "zona": "A3"}, {"nombre": "Hurlingam", "zona": "A3"}, {"nombre": "Ituzaingo", "zona": "A3"}, {"nombre": "Lavallol", "zona": "A3"}, {"nombre": "Marmol", "zona": "A3"}, {"nombre": "Martinez", "zona": "A3"}, {"nombre": "Merlo", "zona": "A3"}, {"nombre": "Monte Grande", "zona": "A3"}, {"nombre": "Moreno", "zona": "A3"}, {"nombre": "Moron", "zona": "A3"}, {"nombre": "Pacheco", "zona": "A3"}, {"nombre": "Paso del rey", "zona": "A3"}, {"nombre": "Polvorines", "zona": "A3"}, {"nombre": "San Antonio de Padua", "zona": "A3"}, {"nombre": "San Fernando", "zona": "A3"}, {"nombre": "San Isidro", "zona": "A3"}, {"nombre": "San Justo", "zona": "A3"}, {"nombre": "Tigre", "zona": "A3"}, {"nombre": "V. Adelina", "zona": "A3"}, {"nombre": "V. Ballester", "zona": "A3"}, {"nombre": "V. Bosch", "zona": "A3"}, {"nombre": "Victoria", "zona": "A3"}, {"nombre": "Villa Martelli", "zona": "A3"}, {"nombre": "Virreyes", "zona": "A3"}, {"nombre": "Del viso", "zona": "A4"}, {"nombre": "Escobar", "zona": "A4"}, {"nombre": "Garin", "zona": "A4"}, {"nombre": "Ingeniero Maschiwitz", "zona": "A4"}, {"nombre": "La plata", "zona": "A4"}, {"nombre": "Pilar", "zona": "A4"}, {"nombre": "Pontevedra", "zona": "A4"}, {"nombre": "San Miguel", "zona": "A4"}, {"nombre": "Tortuguitas", "zona": "A4"}];
+const zoneNames = {"C1": "CABA Zona 1", "C2": "CABA Zona 2", "C3": "CABA Zona 3", "A1": "GBA Zona 1", "A2": "GBA Zona 2", "A3": "GBA Zona 3", "A4": "GBA Zona 4"};
+const zoneOrder = ["C1","C2","C3","A1","A2","A3","A4"];
+const reparto = {"C1": [6933, 7388, 7912, 8513, 9205, 10001, 15126, 23265, 31737], "C2": [7367, 7887, 8485, 9172, 9963, 10873, 16730, 26031, 35714], "C3": [7800, 8385, 9058, 9831, 10721, 11744, 18333, 28798, 39691], "A1": [7262, 7766, 8346, 9013, 9779, 10661, 16341, 25361, 34749], "A2": [8175, 8816, 9554, 10402, 11377, 12499, 19721, 31192, 43132], "A3": [8982, 9744, 10620, 11629, 12788, 14121, 22707, 36341, 50535], "A4": [9962, 10871, 11916, 13119, 14502, 16092, 26333, 42597, 59528]};
+const repartoHeaders = ["0-7 kg", "7-10 kg", "10-15 kg", "15-20 kg", "20-30 kg", "30-50 kg", "50-80 kg", "80-120 kg", "120-150 kg"];
+const exclusivo = {"C1": [[0, 5, 39177], [5, 10, 39198], [10, 15, 39220], [15, 20, 39242], [20, 30, 39285], [30, 50, 39372], [50, 70, 39459], [70, 100, 39590], [100, 150, 39807], [150, 200, 40025], [200, 300, 40460], [300, 500, 41330], [500, 700, 42200], [700, 1000, 77855], [1000, 1500, 81747], [1500, 2000, 85639], [2000, 3000, 93424], [3000, 3300, 319790], [3300, 4500, 350987], [4500, 5500, 502645], [5500, 7000, 554640]], "C2": [[0, 5, 71778], [5, 10, 71818], [10, 15, 71858], [15, 20, 71898], [20, 30, 71977], [30, 50, 72137], [50, 70, 72296], [70, 100, 72535], [100, 150, 72934], [150, 200, 73332], [200, 300, 74129], [300, 500, 75723], [500, 700, 77317], [700, 1000, 88977], [1000, 1500, 93425], [1500, 2000, 97874], [2000, 3000, 106770], [3000, 3300, 319790], [3300, 4500, 350987], [4500, 5500, 502645], [5500, 7000, 554640]], "C3": [[0, 5, 83628], [5, 10, 83674], [10, 15, 83720], [15, 20, 83767], [20, 30, 83860], [30, 50, 84045], [50, 70, 84231], [70, 100, 84510], [100, 150, 84974], [150, 200, 85438], [200, 300, 86367], [300, 500, 88224], [500, 700, 90081], [700, 1000, 100099], [1000, 1500, 105103], [1500, 2000, 110108], [2000, 3000, 120117], [3000, 3300, 321361], [3300, 4500, 352711], [4500, 5500, 502645], [5500, 7000, 554640]], "A1": [[0, 5, 58227], [5, 10, 58259], [10, 15, 58291], [15, 20, 58324], [20, 30, 58388], [30, 50, 58518], [50, 70, 58647], [70, 100, 58841], [100, 150, 59164], [150, 200, 59488], [200, 300, 60134], [300, 500, 61427], [500, 700, 62720], [700, 1000, 86280], [1000, 1500, 90593], [1500, 2000, 94907], [2000, 3000, 103534], [3000, 3300, 319790], [3300, 4500, 350987], [4500, 5500, 502645], [5500, 7000, 554640]], "A2": [[0, 5, 98650], [5, 10, 98704], [10, 15, 98759], [15, 20, 98814], [20, 30, 98924], [30, 50, 99143], [50, 70, 99362], [70, 100, 99690], [100, 150, 100238], [150, 200, 100786], [200, 300, 101881], [300, 500, 104072], [500, 700, 106263], [700, 1000, 109724], [1000, 1500, 115210], [1500, 2000, 120695], [2000, 3000, 131667], [3000, 3300, 319790], [3300, 4500, 350987], [4500, 5500, 502645], [5500, 7000, 554640]], "A3": [[0, 5, 152843], [5, 10, 152928], [10, 15, 153013], [15, 20, 153098], [20, 30, 153267], [30, 50, 153607], [50, 70, 153946], [70, 100, 154455], [100, 150, 155304], [150, 200, 156152], [200, 300, 157850], [300, 500, 161244], [500, 700, 164638], [700, 1000, 175621], [1000, 1500, 185736], [1500, 2000, 194580], [2000, 3000, 212267], [3000, 3300, 376364], [3300, 4500, 413080], [4500, 5500, 515822], [5500, 7000, 569179]], "A4": [[0, 5, 209569], [5, 10, 209685], [10, 15, 209802], [15, 20, 209918], [20, 30, 210151], [30, 50, 210616], [50, 70, 211082], [70, 100, 211780], [100, 150, 212943], [150, 200, 214107], [200, 300, 216434], [300, 500, 221088], [500, 700, 225742], [700, 1000, 249250], [1000, 1500, 270703], [1500, 2000, 294829], [2000, 3000, 321629], [3000, 3300, 517208], [3300, 4500, 567663], [4500, 5500, 615294], [5500, 7000, 678941]]};
+
+let zonaActual = "C1";
+
+function fmt(n) { return "$" + Math.round(n).toLocaleString("es-AR"); }
+
+function renderZoneBtns() {
+  const cont = document.getElementById("zoneBtns");
+  cont.innerHTML = "";
+  zoneOrder.forEach(z => {
+    const btn = document.createElement("button");
+    btn.className = "zone-btn" + (z === zonaActual ? " active" : "");
+    btn.textContent = z;
+    btn.onclick = () => seleccionarZona(z);
+    cont.appendChild(btn);
+  });
+}
+
+function seleccionarZona(z) {
+  zonaActual = z;
+  document.getElementById("zoneName").textContent = zoneNames[z];
+  const locs = localidades.filter(l => l.zona === z).map(l => l.nombre);
+  document.getElementById("zoneLocs").innerHTML = locs.map(l => `<span class="loc-chip">${l}</span>`).join("");
+  renderZoneBtns();
+  renderTablaProg();
+  renderTablaEx();
+}
+
+function renderTablaProg() {
+  const tbody = document.getElementById("tablaProg");
+  tbody.innerHTML = "";
+  const precios = reparto[zonaActual];
+  repartoHeaders.forEach((label, i) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${label}</td><td class="r">${fmt(precios[i])}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderTablaEx() {
+  const tbody = document.getElementById("tablaEx");
+  tbody.innerHTML = "";
+  const tiers = exclusivo[zonaActual];
+  tiers.forEach(([desde, hasta, precio]) => {
+    const label = desde === 0 ? `Hasta ${hasta.toLocaleString("es-AR")} kg` : `${desde.toLocaleString("es-AR")} a ${hasta.toLocaleString("es-AR")} kg`;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${label}</td><td class="r">${fmt(precio)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function mostrarTab(tab) {
+  document.getElementById("tabProg").classList.toggle("active", tab === "prog");
+  document.getElementById("tabEx").classList.toggle("active", tab === "ex");
+  document.getElementById("panelProg").classList.toggle("show", tab === "prog");
+  document.getElementById("panelEx").classList.toggle("show", tab === "ex");
+}
+
+const input = document.getElementById("buscador");
+const resultados = document.getElementById("resultados");
+input.addEventListener("input", () => {
+  const q = input.value.trim().toLowerCase();
+  if (q.length < 2) { resultados.classList.remove("show"); return; }
+  const matches = localidades.filter(l => l.nombre.toLowerCase().includes(q)).slice(0, 8);
+  if (matches.length === 0) { resultados.classList.remove("show"); return; }
+  resultados.innerHTML = matches.map(m => `<div class="search-item" onclick="elegirLocalidad('${m.nombre}','${m.zona}')"><b>${m.nombre}</b> <span>— Zona ${m.zona}</span></div>`).join("");
+  resultados.classList.add("show");
+});
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".search-box")) resultados.classList.remove("show");
+});
+
+function elegirLocalidad(nombre, zona) {
+  input.value = nombre;
+  resultados.classList.remove("show");
+  seleccionarZona(zona);
+}
+
+// --- calculadora de pedido multiple ---
+const repartoLower = [0,7,10,15,20,30,50,80,120];
+let calcItems = [];
+let calcNextId = 1;
+
+function precioProgramado(zona, peso) {
+  let idx = 0;
+  for (let i = 0; i < repartoLower.length; i++) {
+    if (peso >= repartoLower[i]) idx = i;
+  }
+  return reparto[zona][idx];
+}
+
+function precioExclusivo(zona, peso) {
+  const tiers = exclusivo[zona];
+  for (const [desde, hasta, precio] of tiers) {
+    if (peso < hasta) return precio;
+  }
+  return null; // arriba del ultimo tramo: consultar
+}
+
+function agregarEnvio() {
+  calcItems.push({ id: calcNextId++, zona: "C1", peso: 50 });
+  renderCalc();
+}
+
+function eliminarEnvio(id) {
+  calcItems = calcItems.filter(it => it.id !== id);
+  renderCalc();
+}
+
+function actualizarEnvio(id, campo, valor) {
+  const item = calcItems.find(it => it.id === id);
+  if (item) item[campo] = campo === "peso" ? (parseFloat(valor) || 0) : valor;
+  renderCalc();
+}
+
+function renderCalc() {
+  const cont = document.getElementById("calcRows");
+  cont.innerHTML = "";
+  let total = 0;
+  let hayConsultar = false;
+  calcItems.forEach(item => {
+    const usaProgramado = item.peso > 0 && item.peso <= 150;
+    const precio = item.peso > 0 ? (usaProgramado ? precioProgramado(item.zona, item.peso) : precioExclusivo(item.zona, item.peso)) : 0;
+    if (precio === null) hayConsultar = true;
+    else total += precio;
+    const row = document.createElement("div");
+    row.className = "calc-row";
+    const opciones = zoneOrder.map(z => `<option value="${z}" ${z===item.zona?"selected":""}>${zoneNames[z]}</option>`).join("");
+    const precioTxt = item.peso <= 0 ? "—" : (precio === null ? "Consultar" : fmt(precio));
+    row.innerHTML = `
+      <select onchange="actualizarEnvio(${item.id},'zona',this.value)">${opciones}</select>
+      <input type="number" min="0" value="${item.peso||""}" placeholder="kg" onchange="actualizarEnvio(${item.id},'peso',this.value)">
+      <span class="calc-precio">${precioTxt}<span class="tag">${item.peso>0?(usaProgramado?"Programado":"Exclusivo"):""}</span></span>
+      <button class="calc-del" onclick="eliminarEnvio(${item.id})" title="Quitar">✕</button>
+    `;
+    cont.appendChild(row);
+  });
+  document.getElementById("calcTotal").textContent = (hayConsultar ? "Desde " : "") + fmt(total);
+}
+
+agregarEnvio();
+agregarEnvio();
+
+renderZoneBtns();
+seleccionarZona("C1");
+</script>
+
+</body>
+</html>
