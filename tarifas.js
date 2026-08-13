@@ -42,7 +42,7 @@ const TARIFAS = [
   },
   {
     nombre: "Desconsolidación x caja",
-    precio: 450,
+    precio: 500,
     info: "Consiste en descargar las unidades de cajas/bultos que lleguen en el transporte, se realiza con maquinarias o manualmente, dejando la mercadería lista para el ingreso.",
   },
   {
@@ -72,12 +72,12 @@ const TARIFAS = [
   },
   {
     nombre: "Preparación de pedidos (Picking) x unidad",
-    precio: 450,
+    precio: 500,
     info: "Consiste en la apertura de cajas y selección de los productos individuales que van a conformar parte del pedido a despachar",
   },
   {
     nombre: "Packing",
-    precio: 1200,
+    precio: 1600,
     info: "Consiste en el empaquetado, embalaje y etiqueta o rotulación que lleve la caja/pallet, dejando la mercadería lista para el flete de última milla",
   },
 ];
