@@ -66,8 +66,23 @@ const TARIFAS = [
     info: "",
   },
   {
+    nombre: "Almacenamiento mensual x posición",
+    precio: 100,
+    info: "",
+  },
+  {
     nombre: "Preparación de pedidos (Picking) x mt3",
     precio: 7000,
+    info: "",
+  },
+  {
+    nombre: "Preparación de pedidos (Picking) x pallet",
+    precio: 100,
+    info: "",
+  },
+  {
+    nombre: "Preparación de pedidos (Picking) x caja",
+    precio: 100,
     info: "",
   },
   {
