@@ -67,7 +67,7 @@ const TARIFAS = [
   },
   {
     nombre: "Almacenamiento mensual x posición",
-    precio: 100,
+    precio: 33000,
     info: "",
   },
   {
@@ -77,12 +77,12 @@ const TARIFAS = [
   },
   {
     nombre: "Preparación de pedidos (Picking) x pallet",
-    precio: 100,
+    precio: 8000,
     info: "",
   },
   {
     nombre: "Preparación de pedidos (Picking) x caja",
-    precio: 100,
+    precio: 1500,
     info: "",
   },
   {
