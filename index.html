@@ -146,7 +146,10 @@
   thead th.precio-col{text-align:right;}
   tbody td{padding:14px 20px;font-size:17px;border-top:1px solid var(--line);}
   tbody td.precio-col{text-align:right;font-weight:700;color:var(--dark);}
-  tbody tr:nth-child(odd){background:#FCFAFC;}
+  tbody tr.row-odd{background:#FCFAFC;}
+  tr.categoria-row td{padding:11px 20px;font-size:12px;font-weight:800;text-transform:uppercase;
+    letter-spacing:.05em;color:var(--accent);background:var(--tint,#FDF1F5);border-top:1px solid var(--line);}
+  tr.categoria-row:first-child td{border-top:none;}
   .concepto-cell{display:block;position:relative;}
   .info-btn{display:inline-block;vertical-align:middle;margin-left:8px;width:17px;height:17px;border-radius:50%;border:none;
     background:var(--mid);color:#fff;font-size:11px;font-weight:800;font-style:italic;font-family:Georgia,serif;
@@ -164,12 +167,18 @@
     .info-pop{width:min(280px,calc(100vw - 60px));max-width:none;
       font-size:13.5px;line-height:1.5;padding:13px 15px;}
   }
+  .tarifa-suelta{background:var(--card);border-radius:20px;border:1px solid var(--line);overflow:hidden;
+    box-shadow:0 20px 40px -28px rgba(87,45,95,.35);margin-top:18px;}
+  .tarifa-suelta-item{display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:18px 22px;font-size:17px;}
+  .tarifa-suelta-item + .tarifa-suelta-item{border-top:1px solid var(--line);}
+  .tarifa-suelta-item .precio{font-weight:700;color:var(--dark);white-space:nowrap;}
   .tarifas-cond{padding:20px 22px;border-top:1px solid var(--line);background:#FCFAFC;}
   .tarifas-cond-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;}
   @media (max-width:700px){.tarifas-cond-grid{grid-template-columns:1fr;}}
-  .tarifas-cond-grid div{font-size:12.5px;color:var(--muted);}
-  .tarifas-cond-grid b{color:var(--ink);display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;}
-  .foot-list{margin:0;padding:0;list-style:none;font-size:12px;color:var(--muted);}
+  .tarifas-cond-grid div{font-size:15.5px;color:var(--muted);}
+  .tarifas-cond-grid b{color:var(--ink);display:block;font-size:14.5px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;}
+  .foot-list{margin:0;padding:0;list-style:none;font-size:15px;color:var(--muted);}
   .foot-list li{padding:3px 0 3px 16px;position:relative;}
   .foot-list li::before{content:"•";position:absolute;left:0;color:var(--accent);}
 
@@ -478,10 +487,12 @@
           <li>No incluye provisión de pallets — se estipula un pallet en 700 kg y hasta 1,4 m de alto</li>
           <li>Excedentes cotizan aparte</li>
           <li>Validez de cotización: 15 días</li>
-          <li><b>Servicio portuario (Retiro de contenedores en Puerto Buenos Aires)</b> — recargo sobre el servicio si se devuelve el contenedor vacío al día siguiente: +50% antes de las 12hs, +100% después de las 12hs.</li>
+          <li>Recargo sobre el servicio portuario si se devuelve el contenedor vacío al día siguiente: +50% antes de las 12hs, +100% después de las 12hs.</li>
         </ul>
       </div>
     </div>
+
+    <div class="tarifa-suelta reveal" id="tarifaSuelta"></div>
 
     <div class="um-box reveal">
       <div>
@@ -518,21 +529,42 @@
 /* Arma la tabla de precios a partir de TARIFAS (tarifas.js). */
 (function(){
   const tbody = document.getElementById('tarifasBody');
+  const suelta = document.getElementById('tarifaSuelta');
   if (!tbody) return;
   if (typeof TARIFAS === 'undefined') {
     tbody.innerHTML = '<tr><td colspan="2">No se pudo cargar el tarifario (tarifas.js).</td></tr>';
     return;
   }
   const fmt = n => '$' + n.toLocaleString('es-AR');
-  tbody.innerHTML = TARIFAS.map(function(t){
-    const concepto = t.info
-      ? '<span class="concepto-cell">' + t.nombre +
-        '<button type="button" class="info-btn" aria-label="Más información">i</button>' +
-        '<span class="info-pop">' + t.info + '</span></span>'
-      : t.nombre;
-    return '<tr><td>' + concepto + '</td>' +
+  const concepto = t => t.info
+    ? '<span class="concepto-cell">' + t.nombre +
+      '<button type="button" class="info-btn" aria-label="Más información">i</button>' +
+      '<span class="info-pop">' + t.info + '</span></span>'
+    : t.nombre;
+
+  const CATEGORIA_SUELTA = 'Servicio portuario';
+  const itemsTabla = TARIFAS.filter(t => t.categoria !== CATEGORIA_SUELTA);
+  const itemsSueltos = TARIFAS.filter(t => t.categoria === CATEGORIA_SUELTA);
+
+  let lastCategoria = null;
+  let rowIndex = 0;
+  tbody.innerHTML = itemsTabla.map(function(t){
+    let header = '';
+    if (t.categoria !== lastCategoria) {
+      header = '<tr class="categoria-row"><td colspan="2">' + t.categoria + '</td></tr>';
+      lastCategoria = t.categoria;
+    }
+    const rowClass = (rowIndex++ % 2 === 0) ? ' class="row-odd"' : '';
+    return header + '<tr' + rowClass + '><td>' + concepto(t) + '</td>' +
            '<td class="precio-col">' + fmt(t.precio) + '</td></tr>';
   }).join('');
+
+  if (suelta) {
+    suelta.innerHTML = itemsSueltos.map(function(t){
+      return '<div class="tarifa-suelta-item"><div>' + concepto(t) + '</div>' +
+             '<div class="precio">' + fmt(t.precio) + '</div></div>';
+    }).join('');
+  }
 })();
 </script>
 

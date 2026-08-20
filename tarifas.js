@@ -9,9 +9,15 @@
    Los cambios se reflejan en ambos lados automaticamente.
 
    Campos de cada item:
-     nombre : texto que se muestra (obligatorio)
-     precio : numero entero, sin puntos ni signo $ (obligatorio)
-     info   : texto del globo de ayuda (opcional, dejar "" si no lleva)
+     nombre    : texto que se muestra (obligatorio)
+     precio    : numero entero, sin puntos ni signo $ (obligatorio)
+     info      : texto del globo de ayuda (opcional, dejar "" si no lleva)
+     categoria : agrupa el item en la tabla publica (obligatorio).
+                 Usar uno de estos textos:
+                 "Recepción y desconsolidación" | "Ingreso a depósito" |
+                 "Almacenamiento" | "Preparación y despacho"
+                 "Servicio portuario" es especial: no entra en la tabla
+                 agrupada, se muestra aparte en su propio recuadro debajo.
    ============================================================ */
 
 const TARIFAS = [
@@ -19,81 +25,97 @@ const TARIFAS = [
     nombre: "Servicio portuario (Retiro de contenedores en Puerto Buenos Aires)",
     precio: 510000,
     info: "",
+    categoria: "Servicio portuario",
   },
   {
     nombre: "Desconsolidación contenedor 20 pies palletizado",
     precio: 180000,
     info: "Consiste en descargar el contenedor bajando los respectivos pallets con el clark, dejando la mercadería lista para el ingreso",
+    categoria: "Recepción y desconsolidación",
   },
   {
     nombre: "Desconsolidación contenedor 40 pies palletizado",
     precio: 360000,
     info: "",
+    categoria: "Recepción y desconsolidación",
   },
   {
     nombre: "Desconsolidación contenedor 20 pies a granel",
     precio: 270000,
     info: "Consiste en descargar el contenedor bajando los respectivos bultos/cajas con maquinas o manualmente, dejando la mercadería lista para el ingreso.",
+    categoria: "Recepción y desconsolidación",
   },
   {
     nombre: "Desconsolidación contenedor 40 pies a granel",
     precio: 540000,
     info: "",
+    categoria: "Recepción y desconsolidación",
   },
   {
     nombre: "Desconsolidación x caja",
     precio: 500,
     info: "Consiste en descargar las unidades de cajas/bultos que lleguen en el transporte, se realiza con maquinarias o manualmente, dejando la mercadería lista para el ingreso.",
+    categoria: "Recepción y desconsolidación",
   },
   {
     nombre: "Desconsolidación x pallet",
     precio: 12000,
     info: "Consiste en descargar las unidades de pallets que lleguen en el transporte, se realiza con clark, dejando la mercadería lista para el ingreso.",
+    categoria: "Recepción y desconsolidación",
   },
   {
     nombre: "Pallet IN",
     precio: 8000,
     info: "Consiste en realizar el ingreso físico del pallet a la ubicación del deposito donde quedara almacenado y realizar el ingreso administrativo del mismo en el sistema de inventario/gestión de stock",
+    categoria: "Ingreso a depósito",
   },
   {
     nombre: "Caja h/25 kg IN",
     precio: 1500,
     info: "Consiste en realizar el ingreso físico de la caja/bulto a la ubicación del deposito donde quedara almacenado y realizar el ingreso administrativo de la misma en el sistema de inventario/gestión de stock",
+    categoria: "Ingreso a depósito",
   },
   {
     nombre: "Almacenamiento mensual x mt3",
     precio: 25000,
     info: "",
+    categoria: "Almacenamiento",
   },
   {
     nombre: "Almacenamiento mensual x posición",
     precio: 33000,
     info: "",
+    categoria: "Almacenamiento",
   },
   {
     nombre: "Preparación de pedidos (Picking) x mt3",
     precio: 7000,
     info: "",
+    categoria: "Preparación y despacho",
   },
   {
     nombre: "Preparación de pedidos (Picking) x pallet",
     precio: 8000,
     info: "",
+    categoria: "Preparación y despacho",
   },
   {
     nombre: "Preparación de pedidos (Picking) x caja",
     precio: 1500,
     info: "",
+    categoria: "Preparación y despacho",
   },
   {
     nombre: "Preparación de pedidos (Picking) x unidad",
     precio: 500,
     info: "Consiste en la apertura de cajas y selección de los productos individuales que van a conformar parte del pedido a despachar",
+    categoria: "Preparación y despacho",
   },
   {
     nombre: "Packing",
     precio: 1600,
     info: "Consiste en el empaquetado, embalaje y etiqueta o rotulación que lleve la caja/pallet, dejando la mercadería lista para el flete de última milla",
+    categoria: "Preparación y despacho",
   },
 ];
 
