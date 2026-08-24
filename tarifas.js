@@ -14,10 +14,11 @@
      info      : texto del globo de ayuda (opcional, dejar "" si no lleva)
      categoria : agrupa el item en la tabla publica (obligatorio).
                  Usar uno de estos textos:
-                 "Recepción y desconsolidación" | "Ingreso a depósito" |
-                 "Almacenamiento" | "Preparación y despacho"
-                 "Servicio portuario" es especial: no entra en la tabla
-                 agrupada, se muestra aparte en su propio recuadro debajo.
+                 "Retiro contenedores" | "Recepción y desconsolidación" |
+                 "Ingreso a depósito" | "Almacenamiento" |
+                 "Preparación y despacho"
+                 Las categorias se muestran en la tabla en el mismo orden
+                 en que aparecen los items en la lista de abajo.
    ============================================================ */
 
 const TARIFAS = [
@@ -25,7 +26,7 @@ const TARIFAS = [
     nombre: "Servicio portuario (Retiro de contenedores en Puerto Buenos Aires)",
     precio: 510000,
     info: "",
-    categoria: "Servicio portuario",
+    categoria: "Retiro contenedores",
   },
   {
     nombre: "Desconsolidación contenedor 20 pies palletizado",
@@ -112,9 +113,15 @@ const TARIFAS = [
     categoria: "Preparación y despacho",
   },
   {
-    nombre: "Packing",
-    precio: 1600,
-    info: "Consiste en el empaquetado, embalaje y etiqueta o rotulación que lleve la caja/pallet, dejando la mercadería lista para el flete de última milla",
+    nombre: "Packing (Caja + Insumos)",
+    precio: 1500,
+    info: "Consiste en el empaquetado del pedido incluyendo la caja con los insumos necesarios (etiquetas, film, embalado, etc)",
+    categoria: "Preparación y despacho",
+  },
+  {
+    nombre: "Packing (Solo Insumos)",
+    precio: 300,
+    info: "Consiste en la preparación del pedido pero sin incluir la caja ya que se utiliza el bulto que viene del proveedor. Solo se añaden los insumos necesarios (etiquetas, film, embalado, etc)",
     categoria: "Preparación y despacho",
   },
 ];
