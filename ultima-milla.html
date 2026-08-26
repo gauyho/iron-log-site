@@ -4,16 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Iron Log — Última milla CABA y GBA</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/MonaSans.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+  /* Mona Sans — tipografia oficial de ironlog.com.ar (licencia SIL OFL).
+     Es una fuente variable: un solo archivo cubre todos los pesos, de 200 a 900,
+     asi que no hace falta cargar uno por peso. Se sirve desde fonts/, no desde
+     Google Fonts, para que el sitio no dependa de un tercero. */
+  @font-face{
+    font-family:'Mona Sans';
+    src:url('fonts/MonaSans.woff2') format('woff2');
+    font-weight:200 900;
+    font-stretch:75% 125%;
+    font-style:normal;
+    font-display:swap;
+  }
   :root{
     --dark:#572D5F; --mid:#8A5B93; --accent:#E82562;
     --bg:#FAF7FA; --card:#FFFFFF; --ink:#2B1830; --muted:#7A6B80; --line:#EAE1EA; --tint:#F3ECF4;
     --wa:#25D366;
   }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);}
+  /* el peso por defecto del archivo variable es 200 (muy fino): se fija 400
+     explicito para que el texto sin peso declarado se vea normal */
+  body{margin:0;font-family:'Mona Sans',system-ui,-apple-system,'Segoe UI',sans-serif;font-weight:400;
+    background:var(--bg);color:var(--ink);}
   .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
   section{padding:56px 0;}
   img{max-width:100%;display:block;}
@@ -87,7 +101,18 @@
   .calc-box .calc-title{font-weight:800;color:var(--dark);font-size:16px;margin-bottom:4px;}
   .calc-box .calc-sub{font-size:12.5px;color:var(--muted);margin-bottom:18px;}
   .calc-row{display:grid;grid-template-columns:1fr 110px 120px 32px;gap:10px;align-items:center;margin-bottom:10px;}
-  @media (max-width:560px){.calc-row{grid-template-columns:1fr 90px 100px 28px;}}
+  /* la ultima columna va en 32px porque .calc-del mide exactamente 32: con 28
+     el boton sobresalia 4px de la fila */
+  @media (max-width:560px){.calc-row{grid-template-columns:1fr 90px 100px 32px;}}
+  /* abajo de 430px las tres columnas fijas se comian todo el ancho y la columna
+     1fr del desplegable quedaba en 27px, con lo que su texto se cortaba: ahi el
+     desplegable pasa a ocupar una fila entera y el resto va debajo */
+  @media (max-width:430px){
+    .calc-row{grid-template-columns:1fr 100px 32px;}
+    .calc-row select{grid-column:1 / -1;}
+  }
+  /* sin esto los campos no se achican por debajo de su contenido */
+  .calc-row select, .calc-row input{min-width:0;}
   .calc-row select, .calc-row input{font-family:inherit;font-size:13px;padding:10px 12px;border-radius:10px;
     border:1.5px solid var(--line);outline:none;width:100%;}
   .calc-row select:focus, .calc-row input:focus{border-color:var(--mid);}
