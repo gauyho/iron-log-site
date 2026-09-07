@@ -41,7 +41,8 @@
   .eyebrow{display:block;font-size:24px;font-weight:900;letter-spacing:-0.01em;color:var(--accent);margin-bottom:8px;}
   h1{font-size:40px;font-weight:900;line-height:1.08;margin:0 0 14px;color:var(--dark);letter-spacing:-0.02em;}
   h2{font-size:21px;font-weight:800;line-height:1.25;margin:0 0 10px;color:var(--dark);}
-  .lead{font-size:15.5px;line-height:1.6;color:var(--muted);max-width:560px;margin:0 0 20px;}
+  /* Igual que .section-lead del index: las bajadas miden 20px en todo el sitio. */
+  .lead{font-size:20px;line-height:1.5;color:var(--muted);max-width:560px;margin:0 0 20px;}
 
   .search-box{position:relative;max-width:460px;margin-bottom:18px;}
   .search-box input{width:100%;font-family:inherit;font-size:15px;padding:15px 20px;border-radius:999px;
@@ -117,8 +118,11 @@
     border:1.5px solid var(--line);outline:none;width:100%;}
   .calc-row select:focus, .calc-row input:focus{border-color:var(--mid);}
   .calc-precio{font-weight:800;color:var(--dark);font-size:13px;text-align:right;}
-  .calc-precio .tag{display:block;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;}
-  .calc-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;width:32px;text-align:center;}
+  .calc-precio .tag{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;}
+  /* Se ve igual pero mide 44x44 para poder tocarla: el margen negativo hace que
+     siga ocupando los 32px de la columna. */
+  .calc-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;
+    width:44px;height:44px;margin:0 -6px;padding:0;text-align:center;line-height:1;}
   .calc-del:hover{color:var(--accent);}
   .calc-add{background:none;border:1.5px dashed var(--line);color:var(--dark);font-family:inherit;font-weight:700;
     font-size:13px;padding:11px 16px;border-radius:12px;cursor:pointer;width:100%;margin-top:6px;}
@@ -152,6 +156,11 @@
 
   @media (max-width:640px){
     h1{font-size:30px;} .eyebrow{font-size:19px;}
+  }
+  /* Va aca y no arriba: si se declara antes que .cta gana la regla base por
+     orden de aparicion y el boton se sigue saliendo de la pantalla. */
+  @media (max-width:380px){
+    .cta{padding:14px 18px;font-size:13px;white-space:normal;}
   }  .map-bg{position:fixed;inset:0;width:100%;height:100%;z-index:-1;opacity:.09;pointer-events:none;
     fill:none;stroke:#8A5B93;}
 </style>
@@ -310,7 +319,7 @@
   <section class="contacto-section">
     <div class="contacto-inner">
       <h2 style="color:#fff;font-size:26px;">¿Necesitás gestionar algo más grande?</h2>
-      <p style="opacity:.9;font-size:14px;max-width:480px;margin:0 auto;">Para almacenamiento y distribución completa, conocé Iron Log depósito.</p>
+      <p style="opacity:.9;font-size:20px;line-height:1.5;max-width:560px;margin:0 auto;">Para almacenamiento y distribución completa, conocé Iron Log depósito.</p>
       <div class="info">
         <div><b>Dirección</b>Araoz de Lamadrid 1848 | CABA</div>
         <div><b>Web</b>www.ironlog.com.ar</div>
