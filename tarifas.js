@@ -78,13 +78,13 @@ const TARIFAS = [
   },
   {
     nombre: "Almacenamiento mensual x mt3",
-    precio: 15000,
+    precio: 18000,
     info: "",
     categoria: "Almacenamiento",
   },
   {
     nombre: "Almacenamiento mensual x posición",
-    precio: 21000,
+    precio: 22000,
     info: "",
     categoria: "Almacenamiento",
   },
