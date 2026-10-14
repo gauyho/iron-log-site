@@ -196,28 +196,31 @@
   .pain-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.16em;
     text-transform:uppercase;padding:5px 11px;border-radius:5px;}
   .pain-card .title{position:relative;font-weight:900;font-size:clamp(26px,2.9vw,38px);
-    line-height:1.14;letter-spacing:-0.02em;margin-bottom:14px;max-width:15em;}
-  /* 19px: el mismo cuerpo que el resto de las bajadas del sitio. */
-  .pain-card .desc{position:relative;font-size:19px;line-height:1.55;max-width:34em;}
+    line-height:1.14;letter-spacing:-0.02em;margin-bottom:8px;max-width:15em;}
+  /* La bajada termina la frase del titulo ("No tengo lugar / para recibir mi
+     mercaderia"): por eso no va con el cuerpo de texto comun sino como segunda
+     linea del titulo, un escalon mas chica y en color de contraste. */
+  .pain-card .desc{position:relative;font-size:clamp(20px,2vw,27px);font-weight:700;
+    line-height:1.22;letter-spacing:-0.015em;max-width:22em;}
 
   /* Las cuatro tarjetas no son del mismo color: se van alternando para que la
      fila no se lea como un bloque plano. */
   .pain-card.oscura .pain-cuerpo{background:var(--noche);}
   .pain-card.oscura .title{color:#fff;}
-  .pain-card.oscura .desc{color:rgba(255,255,255,.62);}
+  .pain-card.oscura .desc{color:var(--accent);}
   .pain-card.oscura .pain-fantasma{color:rgba(255,255,255,.07);}
   .pain-card.oscura .pain-tag{background:var(--accent);color:#fff;}
 
   .pain-card.clara .pain-cuerpo{background:var(--card);border:1px solid var(--line);border-top:none;}
   .pain-card.clara .title{color:var(--dark);}
-  .pain-card.clara .desc{color:var(--muted);}
+  .pain-card.clara .desc{color:var(--accent);}
   .pain-card.clara .pain-fantasma{color:rgba(87,45,95,.07);}
   .pain-card.clara .pain-tag{background:transparent;color:var(--mid);
     box-shadow:inset 0 0 0 1px var(--line);}
 
   .pain-card.rosa .pain-cuerpo{background:var(--accent);}
   .pain-card.rosa .title{color:#fff;}
-  .pain-card.rosa .desc{color:rgba(255,255,255,.82);}
+  .pain-card.rosa .desc{color:var(--noche);}
   .pain-card.rosa .pain-fantasma{color:rgba(255,255,255,.16);}
   .pain-card.rosa .pain-tag{background:rgba(255,255,255,.18);color:#fff;}
   .pain-card.rosa .picon svg{stroke:#fff;}
@@ -276,15 +279,17 @@
 
   /* La usan la banda oscura y tambien el bloque claro de "Nuestro proposito":
      el rosa contrasta bien contra los dos fondos, asi que es una sola regla. */
-  .banda-eyebrow{display:inline-flex;align-items:center;gap:14px;
-    font-size:12.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
-    color:var(--accent);margin-bottom:26px;}
-  .banda-eyebrow::before{content:"";width:34px;height:2px;background:var(--accent);}
+  /* Volanta de seccion. A 12,5px se perdia al lado de titulos de 80px: va a
+     tamaño de subtitulo para que anuncie la seccion con peso propio. */
+  .banda-eyebrow{display:inline-flex;align-items:center;gap:16px;
+    font-size:clamp(18px,2vw,30px);font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:28px;line-height:1.2;}
+  .banda-eyebrow::before{content:"";flex:none;width:56px;height:3px;border-radius:2px;background:var(--accent);}
   /* Correccion optica, no un estilo distinto: sobre fondo claro el mismo trazo
      se ve mas pesado que sobre el fondo oscuro de la banda. Bajarlo a 500 hace
      que las dos volantas se lean con el mismo grosor. Misma tipografia y mismo
      color en las dos. */
-  .split-rev .banda-eyebrow{font-weight:500;}
+  .split-rev .banda-eyebrow{font-weight:700;}
 
   /* El titulo a la izquierda y la bajada a la derecha, alineados abajo: asi el
      bloque de texto no queda flotando en el medio de la banda. */
@@ -563,8 +568,9 @@
     background:linear-gradient(90deg,rgba(18,10,22,.94) 0%,rgba(18,10,22,.82) 45%,
                rgba(18,10,22,.55) 100%);}
   .um-box .um-texto{max-width:640px;}
-  .um-box .um-eyebrow{display:block;font-size:12.5px;font-weight:600;letter-spacing:.22em;
-    text-transform:uppercase;color:rgba(255,255,255,.52);margin-bottom:14px;}
+  /* Mismo tamaño y peso que las otras volantas de seccion. */
+  .um-box .um-eyebrow{display:block;font-size:clamp(18px,2vw,30px);font-weight:800;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:16px;line-height:1.2;}
   .um-box h3{font-size:38px;font-weight:900;line-height:1.12;margin:0 0 14px;
     letter-spacing:-0.02em;}
   /* 20px y 1.5 de interlineado, los mismos que .section-lead: todas las bajadas
